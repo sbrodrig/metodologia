@@ -142,7 +142,7 @@ plt.plot(fecha2, media,label="Media")
 plt.plot(fecha2,desviacion,label="Desviación Estandar")
 plt.xticks(fecha2, fecha)
 plt.legend()
-plt.xlabel("Mes-Año")
+plt.xlabel("Año-Mes")
 plt.ylabel("Trazas por auto")
 
 
@@ -170,7 +170,7 @@ plt.plot(fechaDia2, mediaDia,label="Media")
 plt.plot(fechaDia2,desviacionDia,label="Desviación Estandar")
 plt.xticks(fechaDia2, fechaDia)
 plt.legend()
-plt.xlabel("Mes-Año")
+plt.xlabel("Año-Mes")
 plt.ylabel("Trazas por día")
 
 plt.show()
