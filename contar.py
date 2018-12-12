@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 #funciones que calculan la media y la desviacion
 def calcularMedia(trazasMes):                   #recibe una lista con todas las trazas/auto o trazas/dia de ese mes
     sum=0
@@ -112,4 +113,58 @@ dictAutoMediciones=extraerPuntos(dictTrazasAuto)
 
 print(dictAutoMediciones)
 print(dictDiaMediciones)
+
+
+
+media=[]
+desviacion=[]
+fecha=[]
+
+x=list(dictAutoMediciones.keys())
+y=list(dictAutoMediciones.values())
+
+for i in y:
+    media.append(i[0])
+    desviacion.append(i[1])
+
+for i in x:
+    fecha.append(str(i[0])+"-"+str(i[1]))
+
+fecha2=range(len(fecha))
+
+plt.figure(1)
+plt.plot(fecha2, media,label="Media")
+plt.plot(fecha2,desviacion,label="Desviación Estandar")
+plt.xticks(fecha2, fecha)
+plt.legend()
+plt.xlabel("Mes-Año")
+plt.ylabel("Trazas por auto")
+
+
+
+mediaDia=[]
+desviacionDia=[]
+fechaDia=[]
+
+x=list(dictDiaMediciones.keys())
+y=list(dictDiaMediciones.values())
+
+for i in y:
+    mediaDia.append(i[0])
+    desviacionDia.append(i[1])
+
+for i in x:
+    fechaDia.append(str(i[0])+"-"+str(i[1]))
+
+fechaDia2=range(len(fechaDia))
+
+plt.figure(2)
+plt.plot(fechaDia2, mediaDia,label="Media")
+plt.plot(fechaDia2,desviacionDia,label="Desviación Estandar")
+plt.xticks(fechaDia2, fechaDia)
+plt.legend()
+plt.xlabel("Mes-Año")
+plt.ylabel("Trazas por día")
+plt.show()
+
 
