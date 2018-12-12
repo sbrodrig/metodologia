@@ -12,10 +12,10 @@ def crearHeatMap(fecha, data):
 #analisis
 dicDias={}                                                              #clave el dia, valor lista de las coordenadas(tupla)
 datasets=[]
-archivo=open("datasets/resultados1.csv")
-archivo2=open("datasets/resultados2.csv")
-archivo3=open("datasets/resultados3.csv")
-archivo4=open("datasets/resultados4.csv")
+archivo=open("../datasets/resultados1.csv")
+archivo2=open("../datasets/resultados2.csv")
+archivo3=open("../datasets/resultados3.csv")
+archivo4=open("../datasets/resultados4.csv")
 datasets.append(archivo)
 datasets.append(archivo2)
 datasets.append(archivo3)

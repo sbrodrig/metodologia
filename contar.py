@@ -33,14 +33,17 @@ dicDias={}                                                              #clave e
 dictTrazasDia={}
 dictTrazasAuto={}
 datasets=[]
-archivo=open("datasets/resultados1.csv")
-archivo2=open("datasets/resultados2.csv")
-archivo3=open("datasets/resultados3.csv")
-archivo4=open("datasets/resultados4.csv")
+archivo=open("../datasets/resultados1.csv")
+archivo2=open("../datasets/resultados2.csv")
+archivo3=open("../datasets/resultados3.csv")
+archivo4=open("../datasets/resultados4.csv")
+#archivo5=open("../datasets/resultados5.csv")
+
 datasets.append(archivo)
 datasets.append(archivo2)
 datasets.append(archivo3)
 datasets.append(archivo4)
+#datasets.append(archivo5)
 
 for file in datasets:
     for linea in file:
@@ -92,21 +95,21 @@ print(len(dicCarros))                                                           
 for dia in dicDias.keys():
     anio = int(dia[:4])
     mes = int(dia[5:7])
-    if (mes,anio) not in dictTrazasDia.keys():
-        dictTrazasDia[(mes,anio)]=[]
-        dictTrazasDia[(mes,anio)].append(len(dicDias[dia]))
+    if (anio,mes) not in dictTrazasDia.keys():
+        dictTrazasDia[(anio,mes)]=[]
+        dictTrazasDia[(anio,mes)].append(len(dicDias[dia]))
     else:
-        dictTrazasDia[(mes, anio)].append(len(dicDias[dia]))
+        dictTrazasDia[(anio,mes)].append(len(dicDias[dia]))
 
 for auto in dicCarros.values():
     for dia in auto.keys():
         anio = int(dia[:4])
         mes = int(dia[5:7])
-        if (mes, anio) not in dictTrazasAuto.keys():
-            dictTrazasAuto[(mes, anio)]=[]
-            dictTrazasAuto[(mes, anio)].append(len(auto[dia]))
+        if (anio,mes) not in dictTrazasAuto.keys():
+            dictTrazasAuto[(anio,mes)]=[]
+            dictTrazasAuto[(anio,mes)].append(len(auto[dia]))
         else:
-            dictTrazasAuto[(mes, anio)].append(len(auto[dia]))
+            dictTrazasAuto[(anio,mes)].append(len(auto[dia]))
 
 dictDiaMediciones=extraerPuntos(dictTrazasDia)
 dictAutoMediciones=extraerPuntos(dictTrazasAuto)
@@ -122,6 +125,8 @@ fecha=[]
 
 x=list(dictAutoMediciones.keys())
 y=list(dictAutoMediciones.values())
+
+x.sort()
 
 for i in y:
     media.append(i[0])
@@ -149,6 +154,8 @@ fechaDia=[]
 x=list(dictDiaMediciones.keys())
 y=list(dictDiaMediciones.values())
 
+x.sort()
+
 for i in y:
     mediaDia.append(i[0])
     desviacionDia.append(i[1])
@@ -165,6 +172,7 @@ plt.xticks(fechaDia2, fechaDia)
 plt.legend()
 plt.xlabel("Mes-Año")
 plt.ylabel("Trazas por día")
+
 plt.show()
 
 
