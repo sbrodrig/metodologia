@@ -32,18 +32,21 @@ dicCarros={}                                                            #clave e
 dicDias={}                                                              #clave el dia, valor lista de las coordenadas(tupla)
 dictTrazasDia={}
 dictTrazasAuto={}
+dictVelocidad={}
 datasets=[]
 archivo=open("../datasets/resultados1.csv")
 archivo2=open("../datasets/resultados2.csv")
 archivo3=open("../datasets/resultados3.csv")
 archivo4=open("../datasets/resultados4.csv")
-#archivo5=open("../datasets/resultados5.csv")
+archivo5=open("../datasets/resultados5.csv")
+archivo6=open("../datasets/resultados6.csv")
 
 datasets.append(archivo)
 datasets.append(archivo2)
 datasets.append(archivo3)
 datasets.append(archivo4)
-#datasets.append(archivo5)
+datasets.append(archivo5)
+datasets.append(archivo6)
 
 for file in datasets:
     for linea in file:
@@ -55,18 +58,27 @@ for file in datasets:
             lat = float(linea[2])
             long = float(linea[3])
             velocidad = linea[4]
+            anio = int(dia[:4])
+            mes = int(dia[5:7])
             if(velocidad != "\n"):                                      #campo velocidad no sea vacio
                 velocidad = float(velocidad)
-                if(velocidad > 0):                                      #velocidad no sea 0
-                    if dia not in dicDias.keys():
+            #   if(velocidad > 0):                                      #velocidad no sea 0
+
+                if (anio, mes) not in dictVelocidad.keys():
+                    dictVelocidad[(anio, mes)] = []
+                    dictVelocidad[(anio, mes)].append(velocidad)
+                else:
+                    dictVelocidad[(anio, mes)].append(velocidad)
+
+                if dia not in dicDias.keys():
                         dicDias[dia]=[]
                         coordenadas=(lat,long)
                         dicDias[dia].append(coordenadas)
-                    else:
+                else:
                         coordenadas = (lat, long)
                         dicDias[dia].append(coordenadas)
 
-                    if carro not in dicCarros.keys():
+                if carro not in dicCarros.keys():
                         dicCarros[carro]={}
                         carroActual= dicCarros[carro]
                         if dia not in carroActual.keys():
@@ -76,7 +88,7 @@ for file in datasets:
                         else:
                             coordenadas = (lat, long)
                             carroActual[dia].append(coordenadas)
-                    else:
+                else:
                         carroActual = dicCarros[carro]
                         if dia not in carroActual.keys():
                             carroActual[dia] = []
@@ -113,11 +125,11 @@ for auto in dicCarros.values():
 
 dictDiaMediciones=extraerPuntos(dictTrazasDia)
 dictAutoMediciones=extraerPuntos(dictTrazasAuto)
+dictVeloMediciones=extraerPuntos(dictVelocidad)
 
 print(dictAutoMediciones)
 print(dictDiaMediciones)
-
-
+print(dictVeloMediciones)
 
 media=[]
 desviacion=[]
@@ -146,7 +158,6 @@ plt.xlabel("Año-Mes")
 plt.ylabel("Trazas por auto")
 
 
-
 mediaDia=[]
 desviacionDia=[]
 fechaDia=[]
@@ -173,6 +184,32 @@ plt.legend()
 plt.xlabel("Año-Mes")
 plt.ylabel("Trazas por día")
 
-plt.show()
 
+mediav=[]
+desviacionv=[]
+fechav=[]
+
+x=list(dictVeloMediciones.keys())
+y=list(dictVeloMediciones.values())
+
+x.sort()
+
+for i in y:
+    mediav.append(i[0])
+    desviacionv.append(i[1])
+
+for i in x:
+    fechav.append(str(i[0])+"-"+str(i[1]))
+
+fechav2=range(len(fechav))
+
+plt.figure(3)
+plt.plot(fechav2, mediav,label="Media")
+plt.plot(fechav2,desviacionv,label="Desviación Estandar")
+plt.xticks(fechav2, fechav)
+plt.legend()
+plt.xlabel("Año-Mes")
+plt.ylabel("Velocidad")
+
+plt.show()
 
