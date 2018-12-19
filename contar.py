@@ -40,12 +40,7 @@ archivo3=open("../datasets/resultados3.csv")
 archivo4=open("../datasets/resultados4.csv")
 archivo5=open("../datasets/resultados5.csv")
 archivo6=open("../datasets/resultados6.csv")
-archivo7=open("../datasets/resultados7.csv")
-archivo8=open("../datasets/resultados8.csv")
-archivo9=open("../datasets/resultados9.csv")
-archivo10=open("../datasets/resultados10.csv")
-archivo11=open("../datasets/resultados11.csv")
-archivo12=open("../datasets/resultados12.csv")
+archivo7=open("../datasets/resultadosUNIDOS.csv")
 
 datasets.append(archivo)
 datasets.append(archivo2)
@@ -54,11 +49,6 @@ datasets.append(archivo4)
 datasets.append(archivo5)
 datasets.append(archivo6)
 datasets.append(archivo7)
-datasets.append(archivo8)
-datasets.append(archivo9)
-datasets.append(archivo10)
-datasets.append(archivo11)
-datasets.append(archivo12)
 
 for file in datasets:
     for linea in file:
@@ -74,7 +64,7 @@ for file in datasets:
             mes = int(dia[5:7])
             if(velocidad != "\n"):                                      #campo velocidad no sea vacio
                 velocidad = float(velocidad)
-            #   if(velocidad > 0):                                      #velocidad no sea 0
+
 
                 if (anio, mes) not in dictVelocidad.keys():
                     dictVelocidad[(anio, mes)] = []
@@ -116,6 +106,24 @@ for auto in dicCarros.keys():
 
 print(len(dicCarros))                                                               #cantidad de autos
 
+dictValidarAutos={}
+for auto in dicCarros.keys():
+    for dia,valor in dicCarros[auto].items():
+        anio = int(dia[:4])
+        mes = int(dia[5:7])
+        if auto not in dictValidarAutos.keys():
+            dictValidarAutos[auto]=[]
+            dictValidarAutos[auto].append((anio, mes))
+        if (anio,mes) not in dictValidarAutos[auto]:
+            dictValidarAutos[auto].append((anio,mes))
+
+print(dictValidarAutos)
+contador=0
+for lfechas in dictValidarAutos.values():
+    if(len(lfechas)==14):
+        contador+=1
+print(contador)
+
 for dia in dicDias.keys():
     anio = int(dia[:4])
     mes = int(dia[5:7])
@@ -142,6 +150,10 @@ dictVeloMediciones=extraerPuntos(dictVelocidad)
 print(dictAutoMediciones)
 print(dictDiaMediciones)
 print(dictVeloMediciones)
+
+
+
+
 
 media=[]
 desviacion=[]
@@ -194,7 +206,7 @@ plt.plot(fechaDia2,desviacionDia,label="Desviación Estandar")
 plt.xticks(fechaDia2, fechaDia)
 plt.legend()
 plt.xlabel("Año-Mes")
-plt.ylabel("Trazas por día")
+plt.ylabel("Cantidad de tramas")
 
 
 mediav=[]
