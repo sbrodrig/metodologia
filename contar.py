@@ -38,11 +38,11 @@ dictHorariasMediciones={}
 dictMesVariable={}
 dictMesVariableMediciones={}
 datasets=[]
-archivo=open("../datasets/oct.csv")
-archivo2=open("../datasets/nov.csv")
-archivo3=open("../datasets/dic.csv")
-archivo4=open("../datasets/nov_otros.csv")
-archivo5=open("../datasets/dic_otros.csv")
+archivo=open("oct.csv")
+archivo2=open("nov.csv")
+archivo3=open("dic.csv")
+archivo4=open("nov_otros.csv")
+archivo5=open("dic_otros.csv")
 
 datasets.append(archivo)
 datasets.append(archivo2)
@@ -67,31 +67,32 @@ for file in datasets:
             hora=int(fechaCompleta[11:13])
             if(velocidad != "\n"):                                     #campo velocidad no sea vacio
                 velocidad = float(velocidad)
+                velocidad = velocidad*3.6
 
                 if (hora >= 0 and hora <6):
-                    if(anio,mes,"0 a 6") not in dictHorarias.keys():
-                        dictHorarias[(anio, mes,"0 a 6")] = []
-                        dictHorarias[(anio, mes,"0 a 6")].append(velocidad)
+                    if(anio,mes,"00:00-06:00") not in dictHorarias.keys():
+                        dictHorarias[(anio, mes,"00:00-06:00")] = []
+                        dictHorarias[(anio, mes,"00:00-06:00")].append(velocidad)
                     else:
-                        dictHorarias[(anio, mes,"0 a 6")].append(velocidad)
+                        dictHorarias[(anio, mes,"00:00-06:00")].append(velocidad)
                 elif (hora>5 and hora <12):
-                    if (anio, mes,"6 a 12") not in dictHorarias.keys():
-                        dictHorarias[(anio, mes,"6 a 12")] = []
-                        dictHorarias[(anio, mes,"6 a 12")].append(velocidad)
+                    if (anio, mes,"06:00-12:00") not in dictHorarias.keys():
+                        dictHorarias[(anio, mes,"06:00-12:00")] = []
+                        dictHorarias[(anio, mes,"06:00-12:00")].append(velocidad)
                     else:
-                        dictHorarias[(anio, mes,"6 a 12")].append(velocidad)
+                        dictHorarias[(anio, mes,"06:00-12:00")].append(velocidad)
                 elif (hora>11 and hora <18):
-                    if (anio, mes,"12 a 18") not in dictHorarias.keys():
-                        dictHorarias[(anio, mes,"12 a 18")] = []
-                        dictHorarias[(anio, mes,"12 a 18")].append(velocidad)
+                    if (anio, mes,"12:00-18:00") not in dictHorarias.keys():
+                        dictHorarias[(anio, mes,"12:00-18:00")] = []
+                        dictHorarias[(anio, mes,"12:00-18:00")].append(velocidad)
                     else:
-                        dictHorarias[(anio, mes,"12 a 18")].append(velocidad)
+                        dictHorarias[(anio, mes,"12:00-18:00")].append(velocidad)
                 elif (hora>17 and hora <=23):
-                    if (anio, mes,"18 a 0") not in dictHorarias.keys():
-                        dictHorarias[(anio, mes,"18 a 0")] = []
-                        dictHorarias[(anio, mes,"18 a 0")].append(velocidad)
+                    if (anio, mes,"18:00-00:00") not in dictHorarias.keys():
+                        dictHorarias[(anio, mes,"18:00-00:00")] = []
+                        dictHorarias[(anio, mes,"18:00-00:00")].append(velocidad)
                     else:
-                        dictHorarias[(anio, mes,"18 a 0")].append(velocidad)
+                        dictHorarias[(anio, mes,"18:00-00:00")].append(velocidad)
 
                 if mes==10:
                     if dia not in dictMesVariable.keys():
@@ -236,7 +237,12 @@ for i in y:
     desviacionDia.append(i[1])
 
 for i in x:
-    fechaDia.append(str(i[0])+"-"+str(i[1]))
+    if i[1]==10:
+        fechaDia.append("Oct-"+str(i[0]))
+    elif i[1]==11:
+        fechaDia.append("Nov-" + str(i[0]))
+    else:
+        fechaDia.append("Dic-" + str(i[0]))
 
 fechaDia2=range(len(fechaDia))
 
@@ -263,7 +269,12 @@ for i in y:
     desviacionv.append(i[1])
 
 for i in x:
-    fechav.append(str(i[0])+"-"+str(i[1]))
+    if i[1]==10:
+        fechav.append("Oct-"+str(i[0]))
+    elif i[1]==11:
+        fechav.append("Nov-" + str(i[0]))
+    else:
+        fechav.append("Dic-" + str(i[0]))
 
 fechav2=range(len(fechav))
 
@@ -273,7 +284,8 @@ plt.plot(fechav2,desviacionv,label="Desviación Estandar")
 plt.xticks(fechav2, fechav)
 plt.legend()
 plt.xlabel("Año-Mes")
-plt.ylabel("Velocidad")
+plt.ylabel("Velocidad (km/h)")
+
 
 media=[]
 desviacion=[]
@@ -289,17 +301,27 @@ for i in y:
     desviacion.append(i[1])
 
 for i in x:
-    fecha.append(str(i[0])+"-"+str(i[1])+"-"+str(i[2]))
+    if i[1]==10:
+        fecha.append("Oct,"+str(i[2]))
+    elif i[1]==11:
+        fecha.append("Nov," + str(i[2]))
+    else:
+        fecha.append("Dic," + str(i[2]))
+
 
 fecha2=range(len(fecha))
+
+plt.rcParams.update({'font.size':5})
 
 plt.figure(4)
 plt.plot(fecha2, media,label="Media")
 plt.plot(fecha2,desviacion,label="Desviación Estandar")
 plt.xticks(fecha2, fecha)
 plt.legend()
-plt.xlabel("Horario-Año-Mes")
-plt.ylabel("Velocidad")
+plt.xlabel("Mes,Horario inicial:Horario final")
+plt.ylabel("Velocidad (km/h)")
+
+plt.rcParams.update({'font.size':10})
 
 media=[]
 desviacion=[]
@@ -325,8 +347,8 @@ plt.plot(fecha2, media,label="Media")
 plt.plot(fecha2,desviacion,label="Desviación Estandar")
 plt.xticks(fecha2, fecha)
 plt.legend()
-plt.xlabel("Octubre 2018")
-plt.ylabel("Velocidad")
+plt.xlabel("Días Octubre 2018")
+plt.ylabel("Velocidad (km/h)")
 
 
 plt.show()
